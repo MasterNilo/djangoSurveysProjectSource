@@ -1,6 +1,8 @@
 version: '3.8'
 # This is the docker-compose version
 
+# This production file can be used with docker-compose the following way:
+# $ docker-compose -f docker-compose-production.yml up --build
 services:
   web:
     build: .

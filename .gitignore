@@ -1,4 +1,4 @@
 .idea/
 staticfiles/
 **/logs
-docker-compose-production.yml
+/docker-compose-src.yml
