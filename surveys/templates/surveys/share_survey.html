@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Share Survey{% endblock title %}
+
+{% block body %}
+    <div class="block">
+        {% if survey.ready_to_release %}
+            <div class="block">
+                <h1 class="is-size-1">Share Your Survey</h1>
+            </div>
+            <div class="block">
+                <h3 class="is-size-3 is-capitalized">{{ survey.title }}</h3>
+            </div>
+            <div class="block">
+                <p>You may share its link for users to fill it in anonymously:
+                    <a href="{% url 'survey_fillout_url' survey.pk %}" class="is-primary">Share link</a></p>
+            </div>
+            <div class="block">
+                <p>Head over to the progress page for an up to date submission information by anonymous users at
+                    <a href="{% url 'survey_progress_url' survey.pk %}" class="is-primary">Survey Progress</a></p>
+            </div>
+        {% else %}
+            <div class="block">
+                <h1 class="is-size-1 is-capitalized">Survey is {{ survey.get_status_display }}</h1>
+            </div>
+            <div class="block">
+                <h3 class="is-size-3">An issue is preventing "<span class="is-capitalized">{{ survey.title }}</span>" from being released.</h3>
+            </div>
+            <div class="block">
+                <p class="content is-medium">You may try to fix it at the <a href="{% url 'edit_survey_url' survey.pk %}">edit page</a>.</p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock body %}

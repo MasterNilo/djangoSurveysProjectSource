@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    {% block head %}{% endblock head %}
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock title %} | Django Surveys</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<nav class="navbar is-spaced" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+        <a class="navbar-item" href="https://bulma.io">
+            <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28" alt="logo_image_here">
+        </a>
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="mynavbar">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+    <div id="mynavbar" class="navbar-menu">
+        <div class="navbar-start">
+            <a class="navbar-item" href="{% url 'home_url' %}">
+                Home
+            </a>
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link">
+                    Sources
+                </a>
+                <div class="navbar-dropdown">
+                    <a href="https://www.python.org/" class="navbar-item">Language: Python</a>
+                    <a href="https://www.djangoproject.com/" class="navbar-item">Web Framework: Django</a>
+                    <a href="https://bulma.io/" class="navbar-item">CSS Framework: Bulma</a>
+                    <a href="#" class="navbar-item">Coming soon: Vue.js</a>
+                    <hr class="navbar-divider">
+                    <a class="navbar-item is-dark" href="https://mattsegal.dev/django-survey-project.html">
+                        Inspiration
+                    </a>
+                </div>
+            </div>
+            <a class="navbar-item" href="{% url 'about_url' %}">
+                About
+            </a>
+        </div>
+        <div class="navbar-end">
+            {% if user.is_authenticated %}
+                <a class="navbar-item is-primary" href="{% url 'survey_list_url' %}">
+                    Your Surveys
+                </a>
+            {% else %}
+            {% endif %}
+            <div class="navbar-item">
+                <div class="buttons">
+                    {% if user.is_authenticated %}
+                        <a href="#" class="button is-primary">
+                            {{ user.email }}
+                        </a>
+                        <a class="button is-outlined is-danger" href="{% url 'logout' %}">
+                            Log Out
+                        </a>
+                    {% else %}
+                        <a class="button is-primary" href="{% url 'signup' %}">
+                            <strong>Sign up</strong>
+                        </a>
+                        <a class="button is-light" href="{% url 'login' %}">
+                            Log in
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<div class="container is-fullhd" style="padding-left: 5px; padding-right: 5px">
+    {% block body %}{% endblock body %}
+    <div style="margin-top: 300px"></div>
+</div>
+<script>
+    const navbarBurgers = Array.prototype.slice.call(
+        document.querySelectorAll('.navbar-burger'), 0
+    ); // call() method calls a function with the given 'this' object and with the
+    // arguments provided individually. In this case, is calling the slice
+    // from the Array prototypes, with navbarBurgers as the 'this', with the
+    // arguments of a querySelectorAll. This results in the creation of an array
+    // thanks to the slice function of the Array prototypes.
+
+    if (navbarBurgers.length > 0) {
+        navbarBurgers.forEach(element => {
+            element.addEventListener('click', () => {
+                let target = element.dataset.target;
+                target = document.getElementById(target);
+
+                element.classList.toggle('is-active');
+                target.classList.toggle('is-active');
+            });
+        });
+    }
+</script>
+</body>
+</html>

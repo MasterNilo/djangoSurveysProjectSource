@@ -1,0 +1,4 @@
+.idea/
+staticfiles/
+**/logs
+docker-compose-production.yml

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Survey Progress{% endblock title %}
+
+{% block body %}
+    <div class="block">
+        <h1 class="is-size-1 is-capitalized">{{ survey.title }}</h1>
+    </div>
+
+    <div class="block">
+        <h3 class="is-size-3">You have had {{ survey.submissions.all|length }} submissions.</h3>
+    </div>
+    <div class="block">
+        Survey url: <a href="{% url 'survey_fillout_url' survey.pk %}">Share link</a>
+    </div>
+    <div class="block">
+        <h2 class="is-size-2">
+            Results
+        </h2>
+    </div>
+
+    <div class="block">
+        {% for question in survey.questions.all %}
+            <table class="table is-bordered is-striped is-hoverable is-fullwidth">
+                    <thead>
+                    <tr>
+                        <th>Question {{ forloop.counter }}: {{ question.text }}</th>
+                        <th>Percentage chosen</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for option in question.options.all %}
+                        <tr>
+                            <td>{{ option.value }}</td>
+                            <td>{% widthratio option.get_chosen survey.submissions.count 100 %}%</td>
+                                <!-- This is very nice tag function generally used to creating
+                                 "bar charts and such, this tag calculates the ratio of a given
+                                 value to a maximum value, and then applies that ratio to a
+                                 constant" according to the django docs. But it can be used for
+                                 anything pretty much.
+                                 In this case, it is being used to calculate the percentage of
+                                 chosen answers based on all submission.
+                                 The format is:
+                                 { % widthratio numerator denominator percent %} -->
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+            </table>
+        {% endfor %}
+    </div>
+{% endblock body %}

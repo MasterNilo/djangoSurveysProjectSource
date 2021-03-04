@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock title %}
+
+{% block body %}
+    <section class="box has-background-primary">
+        <div class="hero-body">
+            <div class="block">
+                <h1 class="title is-1 is-spaced has-text-primary-light">Welcome to Django Surveys!</h1>
+                <h3 class="subtitle is-3 has-text-primary-light">Create surveys, share surveys, complete surveys.</h3>
+            </div>
+        </div>
+    </section>
+    <div class="block">
+        <p class="content is-large">Create your own surveys and send it to others to fill out. Or, fill out someone else's survey!</p>
+    </div>
+    <div class="block">
+        <p class="content is-medium">Head over to your surveys
+            <a href="{% url 'survey_list_url' %}">list</a>
+        </p>
+    </div>
+    <br>
+
+    <br><br><br><br><br>
+    <div class="columns">
+        <div class="column is-6">
+            <article class="message is-info">
+                <div class="message-header">
+                    <div>These are features which are not implemented, yet.</div>
+                </div>
+                <div class="message-body">
+                    <ul>
+                        <li>* Password recovery</li>
+                        <li>* Password reset</li>
+                        <li>* Confirmation emails</li>
+                        <li>* User information update</li>
+                        <li>* User deletion</li>
+                        <li>+ Other stuff I can't think of right now.</li>
+                    </ul>
+                    <br>
+                    <p>If you need help with anything from the list please message me</p>
+                </div>
+            </article>
+
+            <p>Comments, questions, or concerns: please message me on reddit <a href="https://old.reddit.com/u/ModelS-3-XY">u/IhaveASkeletonInside</a></p>
+        </div>
+    </div>
+{% endblock body %}

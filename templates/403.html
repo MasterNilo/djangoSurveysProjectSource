@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Permission Denied{% endblock title %}
+
+{% block body %}
+    <div class="block">
+        <h1 class="is-size-1">403: Permission Denied</h1>
+    </div>
+    <div class="block">
+        <div class="content is-medium">
+            The request contained valid data and was understood by the server, but the server is refusing action. This may be due to the user not having the necessary permissions to access the particular resource, or the client attempted a prohibited action.
+        </div>
+    </div>
+{% endblock body %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Delete Survey{% endblock title %}
+
+{% block body %}
+    <div class="block">
+        <h1 class="is-size-1 is-capitalized">Survey: {{ survey.title }}</h1>
+    </div>
+    <div class="is-size-4">
+        Would you like to delete the survey?
+
+    </div>
+    <div class="block">
+        <form method="post">
+            <div class="columns">
+                <div class="column is-two-thirds">
+                    {% csrf_token %}
+                    <button class="button is-danger" type="submit">Delete</button>
+                    <a class="button is-info" href="{% url 'survey_list_url' %}">Go back</a>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock body %}

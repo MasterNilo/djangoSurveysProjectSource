@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{#{% load bulma_tags %}#}
+
+{% block title %}Fill Survey{% endblock title %}
+
+{% block body %}
+    <div class="block">
+        <div class="block">
+            <h1 class="is-size-1">Please, fill out the survey</h1>
+        </div>
+        <div class="block">
+            <h3 class="is-size-3 is-capitalized">{{ survey.title }}</h3>
+        </div>
+
+    </div>
+    <div class="block"  style="padding-left: 15px">
+        <form action="" method="post">
+            {% csrf_token %}
+
+            <div class="block">
+                {% for question_form in question_forms %}
+                    {# {{ question_form.as_p }}#}
+                    {# {{ question_form|bulma }}#}
+                    {% include 'base_fill_form.html' with form=question_form %}
+                {% empty %}
+                    Hold up: This survey should have never been released!
+                {% endfor %}
+            </div>
+            <input type="submit" value="Save" class="button is-primary"/>
+        </form>
+    </div>
+{% endblock body %}

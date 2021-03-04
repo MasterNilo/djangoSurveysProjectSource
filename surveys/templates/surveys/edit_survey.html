@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Survey{% endblock title %}
+
+{% block body %}
+    <div class="block">
+        <h1 class="title pt-5">{{ survey.title }}</h1>
+        <h1 class="subtitle">&lt;{{ survey.get_status_display }}&gt;</h1>
+    </div>
+    <div class="block">
+        <h2 class="is-size-4">Add new questions or delete the ones below:</h2>
+        <div class="notification is-warning">Question types serve no purpose for now (will be implemented later).</div>
+    </div>
+
+    <div class="block">
+        <div class="columns">
+            <div class="column is-two-thirds">
+                {% for question in survey.questions.all %}
+                    <div class="box">
+                        <div class="content">
+                            <h3 class="is-size-5 is-marginless">Question {{ forloop.counter }}: {{ question.text }}</h3>
+                            <p class="is-marginless">Type: {{ question.get_type_display }}</p>
+
+                            <ul>
+                                {% for option in question.options.all %}
+                                    <li>{{ option.value }}</li>
+                                {% empty %}
+                                    <p class="is-warning">This question has no options</p>
+                                {% endfor %}
+                            </ul>
+
+                            <div class="block">
+                                <nav class="level">
+                                    <div class="level-left">
+                                        <div class="level-item">
+                                            <p>
+                                                <a href="{% url 'edit_question_url' survey.pk question.id %}" class="has-text-link">Edit question</a>
+                                            </p>
+                                        </div>
+                                        <div class="level-item">
+                                            <p>
+                                                <a href="{% url 'delete_question_url' survey.pk question.id %}" class="has-text-danger">Remove question</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="notification is-warning">Wait, you got no questions in this survey!</div>
+                {% endfor %}
+            </div>
+
+            <div class="column">
+                <div class="block">
+                    <a class="button is-outlined is-info mr-1 mb-2"
+                       href="{% url 'new_question_url' survey.pk %}">Add question</a>
+                    <a class="button is-outlined is-primary"
+                        {% if not survey.ready_to_release %}
+                       disabled
+                        {% else %}
+                       href="{% url 'survey_release_url' survey.pk %}"
+                        {% endif %}>Release Survey</a><br>
+                    <a class="button is-outlined is-danger"
+                       href="{% url 'survey_delete_url' survey.pk %}">Delete survey</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock body %}

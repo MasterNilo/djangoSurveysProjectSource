@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load bulma_tags %}
+
+{% block title %}New Survey{% endblock title %}
+
+{% block body %}
+    <div class="block">
+        <div class="block">
+            <h1 class="is-size-1">New Survey</h1>
+        </div>
+        <div class="block">
+            <form method="post">
+                {% csrf_token %}
+                {{ form|bulma }}
+                <button class="button is-info" type="submit" id="add_question">Create survey</button>
+                <a href="{% url 'survey_list_url' %}" class="button is-danger">Cancel</a>
+            </form>
+        </div>
+    </div>
+{% endblock body %}

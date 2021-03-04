@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Surveys{% endblock title %}
+
+{% block body %}
+    <div class="block mt-5">
+        {% if user.is_authenticated %}
+            <h1 class="is-size-1">Hello, {{ user.username }}</h1>
+        {% endif %}
+    </div>
+    <div class="block">
+        <div class="level">
+            <div class="level-left">
+                <h1 class="is-size-2">Your Surveys:</h1>
+            </div>
+            <div class="level-right">
+                <a href="{% url 'new_survey_url' %}" class="is-size-4">New survey</a>
+            </div>
+        </div>
+    </div>
+    <div class="block">
+        <table class="table is-bordered is-striped is-hoverable is-fullwidth">
+            {% if survey_list %}
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Created</th>
+                    <th>Status</th>
+                    <th>Submissions</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for survey in survey_list %}
+                    <tr>
+                        <td class="is-capitalized">{{ survey.title }}</td>
+                        <td>{{ survey.date_created }}</td>
+                        <td>{{ survey.get_status_display }}</td>
+                        <td>{{ survey.submissions.all|length }}</td>
+                        <td>
+                            {% if survey.status == survey.RELEASED %}
+                                <a href="{% url 'survey_progress_url' survey.pk %}">View progress</a>
+                            {% else %}
+                                <a href="{% url 'edit_survey_url' survey.pk %}" class="has-text-info">Edit</a>
+                            {% endif %}
+                            <a href="{% url 'survey_delete_url' survey.pk %}" class="has-text-danger">Delete</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            {% else %}
+                <p class="content is-medium">You currently have no surveys.</p>
+            {% endif %}
+        </table>
+    </div>
+{% endblock body %}

@@ -1,0 +1,87 @@
+<!-- This was an attempt to implement bulma classes to a given form (mostly
+ django built-in forms).
+ This was just for learning and tinkering purposes. Also, this is not the best way
+ to create css when you can just use template tag and '|' filters.
+
+  Another thing, not everything from here is used in the server. For instance, there
+  is no form to upload files, but that functionality is here if needed for
+  future references. -->
+{{ form.non_field_errors }}
+
+{% for field in form %}
+    <div class="field">
+        {% if field.errors %}
+            <div class="notification is-danger">{{ field.errors }}</div>
+        {% endif %}
+
+        <label class="label" for="{{ field.id_for_label }}">{{ field.label }}:</label>
+        {% if field.widget_type == 'select' %}
+            <div class="control">
+                <div class="select">
+                    {% if field.field.choices %}
+                        <select name="{{ field.html_name }}" id="{{ field.id_for_label }}" {% if field.field.required %} required {% endif %}>
+                            {% for option_id, option_text in field.field.choices %}
+                                <option value="{{ option_id }}"{% if field.initial == option_id %} selected {% endif %}>
+                                    {{ option_text }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                </div>
+            </div>
+
+        {% elif field.widget_type == 'clearablefile' %}
+            <div class="file has-name">
+                <label class="file-label" for="{{ field.id_for_label }}">
+                    <input class="file-input" type="file" name="{{ field.html_name }}"
+                           accept="image/*" id="{{ field.id_for_label }}" {% if field.field.required %} required {% endif %}>
+                    <span class="file-cta">
+                        <span class="file-label" id="file-name">
+                            Choose a file…
+                        </span>
+                    </span>
+                </label>
+            </div>
+            <script>
+                document.getElementById("{{ field.id_for_label }}").onchange = function () {
+                    document.getElementById("file-name").textContent = this.files[0].name;
+                }
+            </script>
+
+        {% elif field.widget_type == 'text' %}
+            <div class="control">
+                <input class="input" type="{{ field.widget_type }}" name="{{ field.html_name }}" placeholder="{{ field.field.widget.attrs.placeholder }}"
+                       maxlength="{{ field.field.max_length }}" id="{{ field.id_for_label }}" {% if field.initial %} value="{{ field.initial }}" {% endif %}
+                    {% if field.field.required %} required {% endif %}>
+            </div>
+
+        {% elif field.widget_type == 'number' %}
+            <div class="control">
+                <input class="input" type="{{ field.widget_type }}" name="{{ field.html_name }}"
+                       value="{{ field.field.value }}" step="{{ field.field.widget.attrs.step }}" id="{{ field.id_for_label }}" {% if field.field.required %} required {% endif %}>
+            </div>
+
+        {% elif field.widget_type == 'textarea' %}
+            <div class="control">
+                <textarea class="textarea" name="{{ field.html_name }}" id="{{ field.id_for_label }}" {% if field.field.required %} required {% endif %}></textarea>
+            </div>
+
+        {% elif field.widget_type == 'radioselect' %}
+            <div class="control">
+                <input type="radio" class="radioselect" name="{{ field.html_name }}" id="{{ field.id_for_label }}" {% if field.field.required %} required {% endif %}>{{ field.field.widget.attrs.placeholder }}</input>
+            </div>
+        {% else %}
+            Something else is there. Such as:
+            <p>{{ field }}</p>
+            {#<p>{{ field.widget_type }}</p>#}
+            {#<p>{{ field.help_text }}</p>#}
+            {#<p>{{ field.html_name }}</p>#}
+            {#<p>{{ field.field.value }}</p>#}
+            {#<p>{{ field.id_for_label }}</p>#}
+        {% endif %}
+
+        {% if field.help_text %}
+            <p class="help">{{ field.help_text|safe }}</p>
+        {% endif %}
+    </div>
+{% endfor %}

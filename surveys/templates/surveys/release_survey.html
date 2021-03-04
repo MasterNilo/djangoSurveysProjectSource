@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load bulma_tags %}
+
+{% block title %}Release Survey{% endblock title %}
+
+{% block body %}
+    <div class="block">
+        <div class="block">
+            <h1 class="is-size-1 is-capitalized">Title: {{ survey.title }}</h1>
+        </div>
+        {% if survey.ready_to_release %}
+            <h3 class="is-size-3">Would you like to release your survey to the public?</h3>
+            <div class="block">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                    {% for field in form %}
+                        <div class="field">
+                            {% if field.errors %}
+                                <div class="notification is-danger">{{ field.errors }}</div>
+                            {% endif %}
+                            <label class="label is-info mb-5" for="{{ field.id_for_label }}">You won't be able to undo the release!</label>
+                            <div class="control">
+                                <div>
+                                    {% if field.field.choices %}
+                                        <select hidden name="{{ field.html_name }}" id="{{ field.id_for_label }}" required>
+                                            <option value="{{ form.fields.status.choices.0.0 }}" selected>
+                                                {{ form.fields.status.choices.0.1 }}
+                                                {# The Dot Notation:#}
+                                                {# When Django's templating system encounters dot notation, it performs the  #}
+                                                {# following operations until in finds a None value as result: #}
+
+                                                {# dict.key as a dictionary operation, such as dict["key"] #}
+                                                {# obj.attr as attribute, such as obj.attr #}
+                                                {# obj.func as method call, such as obj.func() #}
+                                                {# list.index as list, such as list[index] #}
+
+                                                {# When a not None returning operation works, it returns that first and finishes. #}
+                                                {# In this case, we are using form.fields.status.choices.0.0 and #}
+                                                {# form.fields.status.choices.0.1 very nicely. #}
+                                                {# obj .dict  .key   .list   .i.j #}
+                                                {# object.dictionary.key.list.list_index.tuple_index #}
+                                            </option>
+                                        </select>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% if field.help_text %}
+                                <p class="help">{{ field.help_text|safe }}</p>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <button class="button is-warning mr-5" type="submit">Release survey</button>
+                    <a href="{% url 'edit_survey_url' survey.pk %}" class="button is-danger">Cancel</a>
+                </form>
+            </div>
+        {% else %}
+            <div class="content">
+                <h3 class="is-size-3">The survey cannot be released, yet.</h3>
+                <p>Possible reason:</p>
+                <ul>
+                    <li>The survey has no questions.</li>
+                    <li>One of your questions doesn't have options.</li>
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+{% endblock body %}
